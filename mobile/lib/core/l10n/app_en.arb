@@ -1,0 +1,7 @@
+{
+  "@@locale": "en",
+  "appTitle": "BAMUL Cattle Insurance",
+  "@appTitle": {
+    "description": "Application title"
+  }
+}

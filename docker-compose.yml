@@ -1,0 +1,85 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: bamul_dev
+      POSTGRES_USER: bamul
+      POSTGRES_PASSWORD: bamul_dev_secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bamul -d bamul_dev"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    command: redis-server --maxmemory 512mb --maxmemory-policy allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+
+  bamul-app-api:
+    build:
+      context: services/bamul-app-api
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      APP_ENV: development
+      DEBUG: "true"
+      DATABASE_URL: postgresql+asyncpg://bamul:bamul_dev_secret@postgres:5432/bamul_dev
+      REDIS_URL: redis://redis:6379
+      AI_SERVICE_BASE_URL: http://bamul-ai-service:8001
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8000/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    volumes:
+      - ./services/bamul-app-api:/app  # hot reload in development
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  bamul-ai-service:
+    build:
+      context: services/bamul-ai-service
+      dockerfile: Dockerfile.cpu
+    ports:
+      - "8001:8001"
+    env_file:
+      - .env
+    environment:
+      APP_ENV: development
+      DEBUG: "true"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8001/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s  # longer — FAISS index load time
+    volumes:
+      - ./services/bamul-ai-service:/app
+
+volumes:
+  postgres_data:
+    driver: local

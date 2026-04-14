@@ -1,0 +1,61 @@
+# =============================================================================
+# BAMUL Cattle Insurance — Monorepo .gitignore
+# =============================================================================
+
+# Python services
+**/__pycache__/
+**/*.py[cod]
+**/.pytest_cache/
+**/.ruff_cache/
+**/.mypy_cache/
+**/dist/
+**/build/
+**/*.egg-info/
+**/.venv/
+**/.uv/
+
+# Environment files — NEVER commit real credentials
+**/.env
+!**/.env.example
+
+# Node / CDK
+**/node_modules/
+infrastructure/cdk.out/
+
+# Flutter / Dart
+mobile/.dart_tool/
+mobile/build/
+mobile/.flutter-plugins
+mobile/.flutter-plugins-dependencies
+mobile/.packages
+**/.packages
+**/.pub-cache/
+**/*.g.dart
+**/*.freezed.dart
+**/*.gr.dart
+
+# ML model files — mounted from S3 at runtime
+**/*.tflite
+services/bamul-ai-service/models/
+
+# macOS
+.DS_Store
+**/.DS_Store
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# AWS CDK
+infrastructure/cdk.out/
+infrastructure/*.js
+infrastructure/*.d.ts
+!infrastructure/jest.config.js
+
+# Secrets — extra guards
+*.pem
+*.key
+*secret*
+*credentials*

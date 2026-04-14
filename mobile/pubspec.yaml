@@ -1,0 +1,86 @@
+name: bamul_cattle_insurance
+description: BAMUL Cattle Insurance Platform
+version: 1.0.0+1
+publish_to: none
+
+environment:
+  sdk: ">=3.3.0 <4.0.0"
+  flutter: ">=3.41.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.19.0
+
+  # State management
+  flutter_bloc: ^8.1.6
+  bloc: ^8.1.4
+  equatable: ^2.0.5
+
+  # Navigation
+  go_router: ^14.2.0
+
+  # Camera & capture
+  mobile_scanner: ^5.2.3
+  camera: ^0.11.0+2
+
+  # On-device ML
+  tflite_flutter: ^0.10.4
+
+  # Local storage
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+
+  # Networking
+  dio: ^5.5.0+1
+  retrofit: ^4.1.0
+
+  # Location
+  geolocator: ^11.0.0
+
+  # Secure storage
+  flutter_secure_storage: ^9.2.2
+
+  # Push notifications
+  firebase_messaging: ^15.1.3
+
+  # Dependency injection
+  get_it: ^7.7.0
+  injectable: ^2.4.2
+
+  # Local packages
+  capture_orchestrator:
+    path: packages/capture_orchestrator
+  barcode_scanner_adapter:
+    path: packages/barcode_scanner_adapter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  build_runner: ^2.4.11
+  injectable_generator: ^2.6.2
+  retrofit_generator: ^8.1.0
+  hive_generator: ^2.0.1
+  very_good_analysis: ^6.0.0
+  mocktail: ^1.0.4
+
+flutter:
+  uses-material-design: true
+  generate: true
+
+  assets:
+    - assets/fonts/
+    - assets/ml/
+
+  fonts:
+    - family: NotoSansKannada
+      fonts:
+        - asset: assets/fonts/NotoSansKannada-Regular.ttf
+        - asset: assets/fonts/NotoSansKannada-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/NotoSansKannada-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/NotoSansKannada-Bold.ttf
+          weight: 700

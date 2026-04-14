@@ -1,0 +1,16 @@
+[allowlist]
+description = "Global allowlist for BAMUL monorepo"
+
+# .env.example files contain placeholder keys, not real secrets
+paths = [
+    ".env.example",
+    "**/.env.example",
+    "**/README.md",
+]
+
+# Placeholder strings that look like secrets but are not
+regexes = [
+    "CHANGE_ME_IN_PRODUCTION",
+    "CHANGE_ME_FOR_LOCAL_DEV_ONLY",
+    "bamul_dev_secret",  # local docker-compose only credential
+]
